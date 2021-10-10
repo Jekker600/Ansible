@@ -1,3 +1,142 @@
+# Основная часть
+```
+1. 
+TASK [Print fact] *****************************************************************************************************************
+ok: [localhost] => {
+    "msg": 12
+}
+```
+```
+2.
+TASK [Print fact] *****************************************************************************************************************
+ok: [localhost] => {
+    "msg": "all default fact"
+}
+```
+```
+4.
+TASK [Print fact] *****************************************************************************************************************
+ok: [centos7] => {
+    "msg": "el"
+}
+ok: [ubuntu] => {
+    "msg": "deb"
+}
+```
+```
+6.
+TASK [Print fact] *****************************************************************************************************************
+ok: [centos7] => {
+    "msg": "el default fact"
+}
+ok: [ubuntu] => {
+    "msg": "deb default fact"
+}
+```
+```
+7.
+ansible-vault encrypt group_vars/deb/examp.yml
+New Vault password:
+Confirm New Vault password:
+Encryption successful
+```
+```
+ansible-vault encrypt group_vars/el/examp.yml
+New Vault password:
+Confirm New Vault password:
+Encryption successful
+```
+```
+8.
+ansible-playbook site.yml -i inventory/prod.yml --ask-vault-pass
+Vault password:
+
+PLAY [Print os facts] *************************************************************************************************************
+
+TASK [Gathering Facts] ************************************************************************************************************
+ok: [ubuntu]
+ok: [centos7]
+
+TASK [Print OS] *******************************************************************************************************************
+ok: [centos7] => {
+    "msg": "CentOS"
+}
+ok: [ubuntu] => {
+    "msg": "Ubuntu"
+}
+
+TASK [Print fact] *****************************************************************************************************************
+ok: [centos7] => {
+    "msg": "el default fact"
+}
+ok: [ubuntu] => {
+    "msg": "deb default fact"
+}
+
+PLAY RECAP ************************************************************************************************************************
+centos7                    : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+```
+9.
+ansible-doc -t connection -l
+local                          execute on controller
+```
+```
+10.
+---
+  el:
+    hosts:
+      centos7:
+        ansible_connection: docker
+  deb:
+    hosts:
+      ubuntu:
+        ansible_connection: docker
+  local:
+    hosts:
+      localhost:
+        ansible_connection: local
+```
+```
+11.
+ ansible-playbook site.yml -i inventory/prod.yml --ask-vault-pass
+Vault password:
+
+PLAY [Print os facts] *************************************************************************************************************
+
+TASK [Gathering Facts] ************************************************************************************************************
+ok: [localhost]
+ok: [ubuntu]
+ok: [centos7]
+
+TASK [Print OS] *******************************************************************************************************************
+ok: [localhost] => {
+    "msg": "Ubuntu"
+}
+ok: [centos7] => {
+    "msg": "CentOS"
+}
+ok: [ubuntu] => {
+    "msg": "Ubuntu"
+}
+
+TASK [Print fact] *****************************************************************************************************************
+ok: [localhost] => {
+    "msg": "all default fact"
+}
+ok: [centos7] => {
+    "msg": "el default fact"
+}
+ok: [ubuntu] => {
+    "msg": "deb default fact"
+}
+
+PLAY RECAP ************************************************************************************************************************
+centos7                    : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+localhost                  : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
 # Самоконтроль выполненения задания
 
 ```
@@ -15,7 +154,7 @@
 ```
 4. Какой командой можно расшифровать файл?
 ```
-- ansible-vault encrypt path/to/file
+- aansible-vault decrypt path/to/file
 ```
 5. Можно ли посмотреть содержимое зашифрованного файла без команды расшифровки файла? Если можно, то как?
 ```
