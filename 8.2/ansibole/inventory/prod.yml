@@ -1,0 +1,11 @@
+---
+elasticsearch:
+  hosts:
+    192.168.1.22:
+      ansible_connection: ssh
+      ansible_user: root
+kibana:
+  hosts:
+    192.168.1.23:
+      ansible_connection: ssh
+      ansible_user: root
